@@ -1,0 +1,27 @@
+﻿@inject AuthenticationStateProvider AuthenticationStateProvider
+
+@if (isUserLoggedIn)
+{
+    <p>Welcome, you are logged in!</p>
+}
+else
+{
+    <p>Please log in to access this section.</p>
+}
+
+@code {
+    private bool isUserLoggedIn = false;
+
+    // Override the OnInitializedAsync lifecycle method to fetch the user's authentication state
+    protected override async Task OnInitializedAsync()
+    {
+        // Get the authentication state
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        // Retrieve the user object
+        var user = authState.User;
+
+        // Check if the user is authenticated and update the variable
+        isUserLoggedIn = user.Identity.IsAuthenticated;
+    }
+}
