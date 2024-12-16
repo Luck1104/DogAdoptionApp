@@ -1,0 +1,40 @@
+﻿@page "/dogs_nologin"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using DogAdoptionApp.Models
+@using DogAdoptionApp.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Dogs</h1>
+
+<table class="table">
+    @foreach (var item in DogList)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.AdoptionStatus
+            </td>
+        </tr>
+    }
+</table>
+
+@code {
+    public IEnumerable<Dog> DogList { get; set; } = new List<Dog>();
+
+    private DogAdoptionAppContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+
+        DogList = context.Dog.ToList();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}
