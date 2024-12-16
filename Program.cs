@@ -1,11 +1,16 @@
-using DogAdoptionApp.Components;
+﻿using DogAdoptionApp.Components;
 using DogAdoptionApp.Components.Account;
 using DogAdoptionApp.Data;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContextFactory<DogAdoptionAppContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DogAdoptionAppContext") ?? throw new InvalidOperationException("Connection string 'DogAdoptionAppContext' not found.")));
+
+builder.Services.AddQuickGridEntityFrameworkAdapter();
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -87,6 +92,13 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -97,6 +109,7 @@ else
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseMigrationsEndPoint();
 }
 
 app.UseHttpsRedirection();
