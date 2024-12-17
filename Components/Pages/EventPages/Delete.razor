@@ -1,0 +1,79 @@
+﻿@page "/events/delete"
+@using Microsoft.EntityFrameworkCore
+@using DogAdoptionApp.Models
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Delete</PageTitle>
+
+<h1>Delete</h1>
+
+<p>Are you sure you want to delete this?</p>
+<div>
+    <h2>ShelterEvent</h2>
+    <hr />
+    @if (shelterEvent is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Name</dt>
+            <dd class="col-sm-10">@shelterEvent.Name</dd>
+        </dl>
+        <dl class="row">
+        <dt class="col-sm-2">Year</dt>
+            <dd class="col-sm-10">@shelterEvent.Year</dd>
+        </dl>
+        <dl class="row">
+        <dt class="col-sm-2">Month</dt>
+            <dd class="col-sm-10">@shelterEvent.Month</dd>
+        </dl>
+        <dl class="row">
+        <dt class="col-sm-2">Day</dt>
+            <dd class="col-sm-10">@shelterEvent.Day</dd>
+        </dl>
+        <dl class="row">
+        <dt class="col-sm-2">Location</dt>
+            <dd class="col-sm-10">@shelterEvent.Location</dd>
+        </dl>
+        <dl class="row">
+        <dt class="col-sm-2">Time</dt>
+            <dd class="col-sm-10">@shelterEvent.Time</dd>
+        </dl>
+        <dl class="row">
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">@shelterEvent.Description</dd>
+        </dl>
+        <EditForm method="post" Model="shelterEvent" OnValidSubmit="DeleteEvent" FormName="delete" Enhance>
+            <button type="submit" class="btn btn-danger" disabled="@(shelterEvent is null)">Delete</button> |
+        <a href="/events">Back to List</a>
+        </EditForm>
+    }
+</div>
+
+@code {
+    private ShelterEvent? shelterEvent;
+
+    [SupplyParameterFromQuery]
+    private int EventID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        shelterEvent = await context.ShelterEvent.FirstOrDefaultAsync(m => m.EventID == EventID);
+
+    if (shelterEvent is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    private async Task DeleteEvent()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.ShelterEvent.Remove(shelterEvent!);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/events");
+    }
+}

@@ -27,7 +27,27 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Dog", x => x.DogID);
-                });
+                }
+            );
+            migrationBuilder.CreateTable(
+                name: "ShelerEvent",
+                columns: table => new
+                {
+                    EventID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Year = table.Column<int>(type: "int", nullable: false),
+                    Month = table.Column<int>(type: "int", nullable: false),
+                    Day = table.Column<int>(type: "int", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Time = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShelterEvent", x => x.EventID);
+                }
+            );
         }
 
         /// <inheritdoc />
@@ -35,6 +55,8 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
         {
             migrationBuilder.DropTable(
                 name: "Dog");
+            migrationBuilder.DropTable(
+                name: "ShelerEvent");
         }
     }
 }

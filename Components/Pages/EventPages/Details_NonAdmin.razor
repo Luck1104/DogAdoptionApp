@@ -1,0 +1,59 @@
+﻿@page "/events/details_adoptable"
+@using Microsoft.EntityFrameworkCore
+@using DogAdoptionApp.Models
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>ShelterEvent</h2>
+    <hr />
+    @if (shelterEvent is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <dl class="row">
+            <dt class="col-sm-2">Name</dt>
+            <dd class="col-sm-10">@shelterEvent.Name</dd>
+            <dt class="col-sm-2">Year</dt>
+            <dd class="col-sm-10">@shelterEvent.Year</dd>
+            <dt class="col-sm-2">Month</dt>
+            <dd class="col-sm-10">@shelterEvent.Month</dd>
+            <dt class="col-sm-2">Day</dt>
+            <dd class="col-sm-10">@shelterEvent.Day</dd>
+            <dt class="col-sm-2">Location</dt>
+            <dd class="col-sm-10">@shelterEvent.Location</dd>
+            <dt class="col-sm-2">Time</dt>
+            <dd class="col-sm-10">@shelterEvent.Time</dd>
+            <dt class="col-sm-2">Description</dt>
+            <dd class="col-sm-10">@shelterEvent.Description</dd>
+        </dl>
+        <div>
+            <a href="">Placeholder for Adoption Form</a>
+            <a href="@($"/events")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private ShelterEvent? shelterEvent;
+
+    [SupplyParameterFromQuery]
+    private int EventID { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        shelterEvent = await context.ShelterEvent.FirstOrDefaultAsync(m => m.EventID == EventID);
+
+        if (shelterEvent is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

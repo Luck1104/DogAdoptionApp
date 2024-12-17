@@ -10,9 +10,9 @@ namespace DogAdoptionApp.Data
             using var context = new DogAdoptionAppContext(
             serviceProvider.GetRequiredService<DbContextOptions<DogAdoptionAppContext>>());
 
-            if (context == null || context.Dog == null)
+            if (context == null || context.Dog == null || context.ShelterEvent == null)
             {
-                throw new NullReferenceException("Null DogAdoptionAppContext or Dog DbSet");
+                throw new NullReferenceException("Null DogAdoptionAppContext or Dog DbSet or ShelterEventDBSet");
             }
 
             if(context.Dog.Any())
@@ -50,6 +50,38 @@ namespace DogAdoptionApp.Data
                     Shelter = "Homeward Animal Shelter",
                     Description = "even more words",
                     AdoptionStatus = "Adopted"
+                });
+
+            context.ShelterEvent.AddRange(
+                new ShelterEvent
+                {
+                    Name = "Fundraiser",
+                    Year = 2024,
+                    Month = 11,
+                    Day = 25,
+                    Location = "Homeward Animal Shelter",
+                    Time = "10am",
+                    Description = "words words words"
+                },
+                new ShelterEvent
+                {
+                    Name = "Movie",
+                    Year = 2025,
+                    Month = 8,
+                    Day = 5,
+                    Location = "Homeward Animal Shelter",
+                    Time = "5pm",
+                    Description = "some other words"
+                },
+                new ShelterEvent
+                {
+                    Name = "Potluck",
+                    Year = 2026,
+                    Month = 10,
+                    Day = 15,
+                    Location = "Homeward Animal Shelter",
+                    Time = "4pm",
+                    Description = "even more words"
                 });
 
             context.SaveChanges();

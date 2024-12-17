@@ -15,5 +15,6 @@ namespace DogAdoptionApp.Data
         }
 
         public DbSet<DogAdoptionApp.Models.Dog> Dog { get; set; } = default!;
+        public DbSet<DogAdoptionApp.Models.ShelterEvent> ShelterEvent { get; set; } = default!;
     }
 }

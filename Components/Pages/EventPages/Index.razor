@@ -1,0 +1,42 @@
+﻿@page "/events"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using DogAdoptionApp.Models
+@using DogAdoptionApp.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>ShelterEvent</h1>
+
+<p>
+    <a href="events/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="context.ShelterEvent">
+    <PropertyColumn Property="shelterEvent => shelterEvent.Name" />
+    <PropertyColumn Property="shelterEvent => shelterEvent.Year" />
+    <PropertyColumn Property="shelterEvent => shelterEvent.Month" />
+    <PropertyColumn Property="shelterEvent => shelterEvent.Day" />
+    <PropertyColumn Property="shelterEvent => shelterEvent.Location" />
+    <PropertyColumn Property="shelterEvent => shelterEvent.Time" />
+    <PropertyColumn Property="shelterEvent => shelterEvent.Description" />
+
+    <TemplateColumn Context="shelterEvent">
+        <a href="@($"events/edit?eventid={shelterEvent.EventID}")">Edit</a> |
+        <a href="@($"events/details?eventid={shelterEvent.EventID}")">Details</a> |
+        <a href="@($"events/delete?eventid={shelterEvent.EventID}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private DogAdoptionAppContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}
