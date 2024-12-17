@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DogAdoptionApp.Models;
+using DogAdoptionApp.Components;
 
 namespace DogAdoptionApp.Data
 {
@@ -15,5 +16,6 @@ namespace DogAdoptionApp.Data
         }
 
         public DbSet<DogAdoptionApp.Models.Dog> Dog { get; set; } = default!;
+        public DbSet<DogAdoptionApp.Components.ShelterEvent> ShelterEvent { get; set; } = default!;
     }
 }

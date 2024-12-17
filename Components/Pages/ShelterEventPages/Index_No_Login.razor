@@ -1,0 +1,43 @@
+﻿@page "/shelterevents_nologin"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using DogAdoptionApp.Components
+@using DogAdoptionApp.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Events</h1>
+
+<table class="table">
+    @foreach (var item in EventList)
+    {
+        <tr>
+            <td>
+                @item.Name
+            </td>
+            <td>
+                @item.Time
+            </td>
+            <td>
+                @item.Description
+            </td>
+        </tr>
+    }
+</table>
+
+@code {
+    public IEnumerable<ShelterEvent> EventList { get; set; } = new List<ShelterEvent>();
+
+    private DogAdoptionAppContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+
+        EventList = context.ShelterEvent.ToList();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}
