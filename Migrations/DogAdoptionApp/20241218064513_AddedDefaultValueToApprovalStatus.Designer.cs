@@ -3,6 +3,7 @@ using DogAdoptionApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DogAdoptionApp.Migrations.DogAdoptionApp
 {
     [DbContext(typeof(DogAdoptionAppContext))]
-    partial class DogAdoptionAppContextModelSnapshot : ModelSnapshot
+    [Migration("20241218064513_AddedDefaultValueToApprovalStatus")]
+    partial class AddedDefaultValueToApprovalStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,11 +44,6 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("DogName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("MonthlyIncome")
                         .HasColumnType("decimal(18, 2)");

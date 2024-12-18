@@ -43,7 +43,7 @@ else
                     <ValidationMessage For="() => Dog.Breed" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="size" class="form-label">Size:</label>
+                    <label for="size" class="form-label">Size (Enter "Small", "Medium", or "Large"):</label>
                     <InputText id="size" @bind-Value="Dog.Size" class="form-control" aria-required="true"/>
                     <ValidationMessage For="() => Dog.Size" class="text-danger" />
                 </div>
@@ -58,7 +58,7 @@ else
                     <ValidationMessage For="() => Dog.Description" class="text-danger" />
                 </div>
                 <div class="mb-3">
-                    <label for="adoptionstatus" class="form-label">AdoptionStatus:</label>
+                    <label for="adoptionstatus" class="form-label">AdoptionStatus (Enter "Available", "Pending", or "Adopted"):</label>
                     <InputText id="adoptionstatus" @bind-Value="Dog.AdoptionStatus" class="form-control" aria-required="true"/>
                     <ValidationMessage For="() => Dog.AdoptionStatus" class="text-danger" />
                 </div>
