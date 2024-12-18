@@ -1,0 +1,60 @@
+﻿@page "/txtboxes/create"
+@using Microsoft.AspNetCore.Components.Forms
+@using DogAdoptionApp.Models
+@using Microsoft.EntityFrameworkCore
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create TxtBox</PageTitle>
+
+<h1>Create TxtBox</h1>
+
+<EditForm Model="TxtBox" OnValidSubmit="HandleValidSubmit" FormName="txtBoxForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="text-danger" />
+
+    <div class="mb-3">
+        <label for="Content" class="form-label">Content:</label>
+        <InputTextArea id="Content" @bind-Value="TxtBox.Content" class="form-control" rows="5" />
+        <ValidationMessage For="() => TxtBox.Content" class="text-danger" />
+    </div>
+   
+
+
+    <div class="mb-3">
+        <label for="imageUrl" class="form-label">ImageUrl:</label>
+        <InputText id="imageUrl" @bind-Value="TxtBox.ImageUrl" class="form-control" />
+        <ValidationMessage For="() => TxtBox.ImageUrl" class="text-danger" />
+    </div>
+
+    @if (!string.IsNullOrEmpty(TxtBox.ImageUrl))
+    {
+        <div class="mb-3">
+            <img src="@TxtBox.ImageUrl" alt="Selected Image" style="max-width: 200px;" />
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</EditForm>
+
+<div>
+    <a href="/txtboxes">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private TxtBox TxtBox { get; set; } = new TxtBox();
+
+    // Handle form submission to create a new TxtBox
+    private async Task HandleValidSubmit()
+    {
+        using var context = DbFactory.CreateDbContext();
+
+        // Add the new TxtBox to the database
+        context.TxtBox.Add(TxtBox);
+        await context.SaveChangesAsync();
+
+        // Navigate back to the list page after saving
+        NavigationManager.NavigateTo("/txtboxes");
+    }
+}
