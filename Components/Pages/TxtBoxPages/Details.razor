@@ -1,0 +1,48 @@
+﻿@page "/txtboxes/details"
+@using Microsoft.EntityFrameworkCore
+@using DogAdoptionApp.Models
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Details</PageTitle>
+
+<h1>Details</h1>
+
+<div>
+    <h2>TxtBox</h2>
+    <hr />
+    @if (txtbox is null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else {
+        <dl class="row">
+            <dt class="col-sm-2">Content</dt>
+            <dd class="col-sm-10">@txtbox.Content</dd>
+            <dt class="col-sm-2">ImageUrl</dt>
+            <dd class="col-sm-10">@txtbox.ImageUrl</dd>
+        </dl>
+        <div>
+            <a href="@($"/txtboxes/edit?id={txtbox.Id}")">Edit</a> |
+            <a href="@($"/txtboxes")">Back to List</a>
+        </div>
+    }
+</div>
+
+@code {
+    private TxtBox? txtbox;
+
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        txtbox = await context.TxtBox.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (txtbox is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+}

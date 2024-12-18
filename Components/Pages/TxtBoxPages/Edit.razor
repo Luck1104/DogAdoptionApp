@@ -1,0 +1,109 @@
+﻿@page "/txtboxes/edit"
+@using Microsoft.EntityFrameworkCore
+@using DogAdoptionApp.Models
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Edit</PageTitle>
+
+<h1>Edit</h1>
+
+<h2>TxtBox</h2>
+<hr />
+@if (TxtBox is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-6">
+            <EditForm Method="post" Model="TxtBox" OnValidSubmit="UpdateTxtBox" FormName="edit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger" role="alert" />
+
+                <!-- Hidden field to ensure TxtBox.Id is submitted -->
+                <input type="hidden" name="TxtBox.Id" value="@TxtBox.Id" />
+
+                <div class="mb-3">
+                    <label for="content" class="form-label">Content:</label>
+                    <!-- Use InputTextArea for multi-line content input -->
+                    <InputTextArea id="content" @bind-Value="TxtBox.Content" class="form-control" rows="6" />
+                    <ValidationMessage For="() => TxtBox.Content" class="text-danger" />
+                </div>
+
+                <!-- ImageUrl field updated to match the format -->
+                <div class="mb-3">
+                    <label for="imageurl" class="form-label">ImageUrl:</label>
+                    <InputText id="imageurl" @bind-Value="TxtBox.ImageUrl" class="form-control" />
+                    <ValidationMessage For="() => TxtBox.ImageUrl" class="text-danger" />
+                </div>
+
+                <!-- Display the selected image -->
+                @if (!string.IsNullOrEmpty(TxtBox.ImageUrl))
+                {
+                    <div>
+                        <img src="@TxtBox.ImageUrl" alt="Selected Image" style="max-width: 200px;" />
+                    </div>
+                }
+
+                <button type="submit" class="btn btn-primary">Save</button>
+            </EditForm>
+        </div>
+    </div>
+}
+
+<div>
+    <a href="/txtboxes">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    private int Id { get; set; }
+
+    [SupplyParameterFromForm]
+    private TxtBox? TxtBox { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        TxtBox ??= await context.TxtBox.FirstOrDefaultAsync(m => m.Id == Id);
+
+        if (TxtBox is null)
+        {
+            NavigationManager.NavigateTo("notfound");
+        }
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more information, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task UpdateTxtBox()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.Attach(TxtBox!).State = EntityState.Modified;
+
+        try
+        {
+            await context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!TxtBoxExists(TxtBox!.Id))
+            {
+                NavigationManager.NavigateTo("notfound");
+            }
+            else
+            {
+                throw;
+            }
+        }
+
+        NavigationManager.NavigateTo("/txtboxes");
+    }
+
+    private bool TxtBoxExists(int id)
+    {
+        using var context = DbFactory.CreateDbContext();
+        return context.TxtBox.Any(e => e.Id == id);
+    }
+}
