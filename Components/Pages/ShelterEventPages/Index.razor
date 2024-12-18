@@ -16,16 +16,15 @@
 
 <QuickGrid Class="table" Items="context.ShelterEvent">
     <PropertyColumn Property="shelterevent => shelterevent.Name" />
-    <PropertyColumn Property="shelterevent => shelterevent.Year" />
     <PropertyColumn Property="shelterevent => shelterevent.Month" />
     <PropertyColumn Property="shelterevent => shelterevent.Day" />
-    <PropertyColumn Property="shelterevent => shelterevent.Location" />
+    <PropertyColumn Property="shelterevent => shelterevent.Year" />
     <PropertyColumn Property="shelterevent => shelterevent.Time" />
+    <PropertyColumn Property="shelterevent => shelterevent.Location" />
     <PropertyColumn Property="shelterevent => shelterevent.Description" />
 
     <TemplateColumn Context="shelterevent">
         <a href="@($"shelterevents/edit?sheltereventid={shelterevent.ShelterEventID}")">Edit</a> |
-        <a href="@($"shelterevents/details?sheltereventid={shelterevent.ShelterEventID}")">Details</a> |
         <a href="@($"shelterevents/delete?sheltereventid={shelterevent.ShelterEventID}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>

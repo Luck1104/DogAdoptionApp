@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DogAdoptionApp.Models;
+using DogAdoptionApp.Components;
 
 namespace DogAdoptionApp.Data
 {
@@ -10,9 +11,9 @@ namespace DogAdoptionApp.Data
             using var context = new DogAdoptionAppContext(
             serviceProvider.GetRequiredService<DbContextOptions<DogAdoptionAppContext>>());
 
-            if (context == null || context.Dog == null)
+            if (context == null || context.Dog == null || context.ShelterEvent == null)
             {
-                throw new NullReferenceException("Null DogAdoptionAppContext or Dog DbSet");
+                throw new NullReferenceException("Null DogAdoptionAppContext, Dog DbSet, or SHelterEvent DbSet");
             }
 
             if(context.Dog.Any())
@@ -50,6 +51,43 @@ namespace DogAdoptionApp.Data
                     Shelter = "Homeward Animal Shelter",
                     Description = "even more words",
                     AdoptionStatus = "Adopted"
+                });
+
+            if (context.ShelterEvent.Any())
+            {
+                return;
+            }
+
+            context.ShelterEvent.AddRange(
+                new ShelterEvent
+                {
+                    Name = "Christmas Party",
+                    Year = 2024,
+                    Month = 12,
+                    Day = 25,
+                    Location = "Homeward Animal Shelter",
+                    Time = "5:00pm",
+                    Description = "words words words"
+                },
+                new ShelterEvent
+                {
+                    Name = "Fundraiser",
+                    Year = 2025,
+                    Month = 6,
+                    Day = 28,
+                    Location = "Homeward Animal Shelter",
+                    Time = "10:00am",
+                    Description = "some other words"
+                },
+                new ShelterEvent
+                {
+                    Name = "Adoption Event",
+                    Year = 2030,
+                    Month = 1,
+                    Day = 8,
+                    Location = "Homeward Animal Shelter",
+                    Time = "9:15pm",
+                    Description = "even more words"
                 });
 
             context.SaveChanges();
