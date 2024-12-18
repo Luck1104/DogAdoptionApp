@@ -25,6 +25,7 @@ namespace DogAdoptionApp.Data
                 new Dog
                 {
                     Name = "Fido",
+                    DogImage = "Images/dog1.jpg",
                     Age = 5,
                     Breed = "English Pointer",
                     Size = "Large",
@@ -35,6 +36,7 @@ namespace DogAdoptionApp.Data
                 new Dog
                 {
                     Name = "Daisy",
+                    DogImage = "Images/dog2.jpg",
                     Age = 2,
                     Breed = "Beagle",
                     Size = "Small",
@@ -45,6 +47,7 @@ namespace DogAdoptionApp.Data
                 new Dog
                 {
                     Name = "Charlie",
+                    DogImage = "Images/dog3.jpg",
                     Age = 7,
                     Breed = "Border Collie",
                     Size = "Medium",

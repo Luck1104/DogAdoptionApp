@@ -10,15 +10,55 @@
 
 <h1>Dogs</h1>
 
+<form action="/dogs_adoptable" data-enhance>
+    <input type="search" name="breedFilter" />
+    <input type="submit" value="Search by Breed" />
+</form>
+  &nbsp;&nbsp;
+<form action="/dogs_adoptable" data-enhance>
+    <input type="search" name="sizeFilter" />
+    <input type="submit" value="Search by Size" />
+</form>
+<br />
+
 <table class="table">
+    <tr>
+        <td>
+            <strong>Image</strong>
+        </td>
+        <td>
+            <strong>Name</strong>
+        </td>
+        <td>
+            <strong>Age</strong>
+        </td>
+        <td>
+            <strong>Breed</strong>
+        </td>
+        <td>
+            <strong>Size</strong>
+        </td>
+        <td>
+            <strong>Details</strong>
+        </td>
+    </tr>
     @foreach (var item in DogList)
     {
         <tr>
             <td>
+                <img src=@item.DogImage alt="mydog" style="width:100px ; height:100px">
+            </td>
+            <td>
                 @item.Name
             </td>
             <td>
-                @item.AdoptionStatus
+                @item.Age
+            </td>
+            <td>
+                @item.Breed
+            </td>
+            <td>
+                @item.Size
             </td>
             <td>
                 <a href="@($"dogs/details_adoptable?dogid={item.DogID}")">Select</a>
@@ -28,6 +68,14 @@
 </table>
 
 @code {
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? BreedFilter { get; set; }
+
+    [Parameter]
+    [SupplyParameterFromQuery]
+    public string? SizeFilter { get; set; }
+
     public IEnumerable<Dog> DogList { get; set; } = new List<Dog>();
 
     private DogAdoptionAppContext context = default!;
@@ -37,6 +85,25 @@
         context = DbFactory.CreateDbContext();
 
         DogList = context.Dog.ToList();
+
+        if (BreedFilter != null || SizeFilter != null)
+        {
+            if (BreedFilter != null)
+            {
+                DogList = context.Dog.Where(
+                    item => item.Breed.ToLower().Contains(BreedFilter)).ToList();
+            }
+            if (SizeFilter != null)
+            {
+                DogList = context.Dog.Where(
+                    item => item.Size.ToLower().Contains(SizeFilter)).ToList();
+            }
+        }
+        else
+        {
+            DogList = context.Dog.Where(
+                item => item.AdoptionStatus.Contains("Available")).ToList();
+        }
     }
 
     public async ValueTask DisposeAsync() => await context.DisposeAsync();

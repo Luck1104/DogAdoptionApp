@@ -15,6 +15,9 @@ builder.Services.AddQuickGridEntityFrameworkAdapter();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddDbContext<DogAdoptionAppContext>(options =>
+    options.UseSqlServer("YourConnectionString"));
+builder.Services.AddDbContextFactory<DogAdoptionAppContext>();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();

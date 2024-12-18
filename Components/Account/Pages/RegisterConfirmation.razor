@@ -19,13 +19,13 @@
 @if (emailConfirmationLink is not null)
 {
     <p>
-        Current is not actually sending anything out
-        Normally this would be emailed: <a href="@emailConfirmationLink">Click here to confirm your account</a>
+        Ensure this is your email then click: 
+        <a href="@emailConfirmationLink">(@Email)</a>
     </p>
 }
 else
 {
-    <p>Please check your email to confirm your account.</p>
+    <p>Please check your email (@Email) to confirm your account.</p>
 }
 
 @code {

@@ -11,14 +11,40 @@
 <h1>Dogs</h1>
 
 <table class="table">
+    <tr>
+        <td>
+            <strong>Image</strong>
+        </td>
+        <td>
+            <strong>Name</strong>
+        </td>
+        <td>
+            <strong>Age</strong>
+        </td>
+        <td>
+            <strong>Breed</strong>
+        </td>
+        <td>
+            <strong>Size</strong>
+        </td>
+    </tr>
     @foreach (var item in DogList)
     {
         <tr>
+            <td>
+                <img src=@item.DogImage alt="mydog" style="width:100px ; height:100px">
+            </td>
             <td>
                 @item.Name
             </td>
             <td>
                 @item.AdoptionStatus
+            </td>
+            <td>
+                @item.Breed
+            </td>
+            <td>
+                @item.Size
             </td>
         </tr>
     }
@@ -33,7 +59,8 @@
     {
         context = DbFactory.CreateDbContext();
 
-        DogList = context.Dog.ToList();
+        DogList = context.Dog.Where(
+                item => item.AdoptionStatus.Contains("Available")).ToList();
     }
 
     public async ValueTask DisposeAsync() => await context.DisposeAsync();
