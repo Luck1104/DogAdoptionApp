@@ -6,6 +6,8 @@ namespace DogAdoptionApp.Models
     {
         [Required]
         public int DogID { get; set; }
+
+        public string? DogImage { get; set; }
         
         [Required]
         [StringLength(30, MinimumLength = 2)]
@@ -20,6 +22,7 @@ namespace DogAdoptionApp.Models
         public string Breed { get; set; }
 
         [Required]
+        [RegularExpression(@"^(Small|Medium|Large)$")]
         public string Size { get; set; }
         
         [Required]
@@ -29,7 +32,7 @@ namespace DogAdoptionApp.Models
         public string? Description { get; set; }
         
         [Required]
-        [StringLength(30, MinimumLength = 2)]
+        [RegularExpression(@"^(Available|Pending|Adopted)$")]
         public string AdoptionStatus { get; set; }
 
     }
