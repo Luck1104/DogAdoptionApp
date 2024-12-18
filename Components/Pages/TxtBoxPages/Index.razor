@@ -1,0 +1,52 @@
+﻿@page "/txtboxes"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using DogAdoptionApp.Models
+@using DogAdoptionApp.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="txtboxes/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="context.TxtBox">
+    <TemplateColumn Title="Content" Context="txtbox">
+        <div style="white-space: pre-wrap; word-wrap: break-word;">
+            @txtbox.Content
+        </div>
+    </TemplateColumn>
+
+    <TemplateColumn Title="Image" Context="txtbox">
+        @if (!string.IsNullOrEmpty(txtbox.ImageUrl))
+        {
+            <img src="@txtbox.ImageUrl" alt="TxtBox Image" style="max-width: 150px; height: auto;" />
+        }
+        else
+        {
+            
+        }
+    </TemplateColumn>
+
+    <TemplateColumn Context="txtbox">
+        <a href="@($"txtboxes/edit?id={txtbox.Id}")">Edit</a> |
+        <a href="@($"txtboxes/details?id={txtbox.Id}")">Details</a> |
+        <a href="@($"txtboxes/delete?id={txtbox.Id}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private DogAdoptionAppContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+
+}

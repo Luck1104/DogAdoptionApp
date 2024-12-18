@@ -1,7 +1,150 @@
 ﻿@page "/"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using DogAdoptionApp.Models
+@using DogAdoptionApp.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Fido and Co.</PageTitle>
 
-<h1>Hello, world!</h1>
+<!-- Main Container for Rightward Shift -->
+<div class="main-container">
+    <!-- Banner Section -->
+    <div class="banner">
+        <h1>Fido and Co.</h1>
+        <p>Welcome to our website! Stay updated with new posts and images.</p>
+    </div>
 
-Welcome to your new app.
+    
+
+    <!-- QuickGrid Section for Blog Posts -->
+    <div class="blog-posts">
+        <QuickGrid Class="table" Items="context.TxtBox">
+            <TemplateColumn Context="txtbox">
+                <div class="blog-entry">
+                    <div class="blog-content">
+                        @txtbox.Content
+                    </div>
+
+                    <div class="blog-image">
+                        @if (!string.IsNullOrEmpty(txtbox.ImageUrl))
+                        {
+                            <img src="@txtbox.ImageUrl" alt="Uploaded Image" />
+                        }
+                        else
+                        {
+                           
+                        }
+                    </div>
+                </div>
+            </TemplateColumn>
+        </QuickGrid>
+    </div>
+</div>
+
+@code {
+    private DogAdoptionAppContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}
+
+<!-- CSS Styling -->
+<style>
+ 
+    body {
+        background-image: url('/images/PawsBackground.png'); 
+        background-size: cover; 
+        background-position: center center; 
+        background-attachment: fixed; 
+        margin: 0;
+        padding: 0;
+    }
+
+    
+    .main-container {
+        margin-left: 50px; 
+        background-color: rgba(255, 255, 255, 0.8); 
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+  
+    .banner {
+        background-color: #003366; 
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+        border-radius: 10px;
+    }
+
+        .banner h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #ffffff;
+        }
+
+        .banner p {
+            font-size: 1.1em;
+            color: #d1e1f0; 
+            margin-top: 10px;
+        }
+
+    /* Create New Link Styling */
+    .create-new-link {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .create-new-link:hover {
+            text-decoration: underline;
+        }
+
+    /* Blog Posts Section Styling */
+    .blog-posts {
+        margin-top: 30px;
+    }
+
+    /* Each Blog Post Entry Styling */
+    .blog-entry {
+        margin-bottom: 30px; 
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative; 
+    }
+
+    /* Content Styling */
+    .blog-content {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-size: 1.1em;
+        line-height: 1.5em;
+        color: #212529;
+        margin-right: 220px;
+    }
+
+    
+    .blog-image {
+        position: absolute; 
+        top: 0;
+        right: 0;
+        margin-top: 10px; 
+        margin-right: 20px; 
+        max-width: 100px; 
+        max-height: 80px;
+    }
+
+        .blog-image img {
+            width: 100%;
+            border-radius: 5px;
+        }
+</style>

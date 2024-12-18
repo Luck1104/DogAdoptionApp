@@ -21,6 +21,7 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+
             modelBuilder.Entity("DogAdoptionApp.Models.AdoptionForm", b =>
                 {
                     b.Property<int>("AdoptionFormID")
@@ -110,6 +111,25 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
                     b.HasKey("DogID");
 
                     b.ToTable("Dog");
+
+            modelBuilder.Entity("DogAdoptionApp.Models.TxtBox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TxtBox");
+
                 });
 #pragma warning restore 612, 618
         }
