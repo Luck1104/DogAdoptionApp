@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DogAdoptionApp.Components
+namespace DogAdoptionApp.Models
 {
     public class ShelterEvent
     {
@@ -9,7 +9,7 @@ namespace DogAdoptionApp.Components
 
         [Required]
         [StringLength(30, MinimumLength = 2)]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [Range(2024, 2124)]
@@ -24,10 +24,10 @@ namespace DogAdoptionApp.Components
         public int Day { get; set; }
 
         [Required]
-        public String Location { get; set; }
+        public string Location { get; set; }
 
         [Required]
-        public String Time { get; set; }
+        public string Time { get; set; }
 
         public string? Description { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿@page "/shelterevents/create"
 @using Microsoft.EntityFrameworkCore
-@using DogAdoptionApp.Components
+@using DogAdoptionApp.Models
 @inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
 @inject NavigationManager NavigationManager
 
@@ -12,6 +12,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <DogAdoptionApp.Components.Account.Shared.StatusMessage Message="@errorMessage" />
         <EditForm method="post" Model="ShelterEvent" OnValidSubmit="AddShelterEvent" FormName="create" Enhance>
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert"/>
@@ -63,12 +64,23 @@
     [SupplyParameterFromForm]
     private ShelterEvent ShelterEvent { get; set; } = new();
 
+    private string? errorMessage;
+
     // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
     private async Task AddShelterEvent()
     {
-        using var context = DbFactory.CreateDbContext();
-        context.ShelterEvent.Add(ShelterEvent);
-        await context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/shelterevents");
+        DateOnly eventDate = new DateOnly(ShelterEvent.Year, ShelterEvent.Month, ShelterEvent.Day);
+        DateOnly dateNow = DateOnly.FromDateTime(DateTime.Now);
+        if (eventDate > dateNow)
+        {
+            using var context = DbFactory.CreateDbContext();
+            context.ShelterEvent.Add(ShelterEvent);
+            await context.SaveChangesAsync();
+            NavigationManager.NavigateTo("/shelterevents");
+        }
+        else
+        {
+            errorMessage = "Error: Please choose a date in the future.";
+        }
     }
 }

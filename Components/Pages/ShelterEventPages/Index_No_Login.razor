@@ -1,7 +1,7 @@
 ﻿@page "/shelterevents_nologin"
 @using Microsoft.EntityFrameworkCore
 @using Microsoft.AspNetCore.Components.QuickGrid
-@using DogAdoptionApp.Components
+@using DogAdoptionApp.Models
 @using DogAdoptionApp.Data
 @implements IAsyncDisposable
 @inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
@@ -18,7 +18,7 @@
                 @item.Name
             </td>
             <td>
-                @item.Month-@item.Day-@item.Year
+                @item.Month/@item.Day/@item.Year
             </td>
             <td>
                 @item.Time
