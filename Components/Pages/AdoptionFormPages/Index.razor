@@ -1,0 +1,34 @@
+﻿@page "/adoptionforms"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using DogAdoptionApp.Models
+@using DogAdoptionApp.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<QuickGrid Class="table" Items="context.AdoptionForm">
+    <PropertyColumn Property="adoptionform => adoptionform.Name" />
+    <PropertyColumn Property="adoptionform => adoptionform.DogName" />
+    <PropertyColumn Property="adoptionform => adoptionform.ApprovalStatus" />
+
+    <TemplateColumn Context="adoptionform">
+        <a href="@($"adoptionforms/edit_admin?adoptionformid={adoptionform.AdoptionFormID}")">Review</a> |
+        <!-- <a href="@($"adoptionforms/details?adoptionformid={adoptionform.AdoptionFormID}")">Details</a> | -->
+        <a href="@($"adoptionforms/delete?adoptionformid={adoptionform.AdoptionFormID}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private DogAdoptionAppContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}

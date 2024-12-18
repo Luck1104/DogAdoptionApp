@@ -3,6 +3,7 @@ using DogAdoptionApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DogAdoptionApp.Migrations.DogAdoptionApp
 {
     [DbContext(typeof(DogAdoptionAppContext))]
-    partial class DogAdoptionAppContextModelSnapshot : ModelSnapshot
+    [Migration("20241218064513_AddedDefaultValueToApprovalStatus")]
+    partial class AddedDefaultValueToApprovalStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,7 +23,6 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
 
             modelBuilder.Entity("DogAdoptionApp.Models.AdoptionForm", b =>
                 {
@@ -42,11 +44,6 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("DogName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("MonthlyIncome")
                         .HasColumnType("decimal(18, 2)");
@@ -111,25 +108,6 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
                     b.HasKey("DogID");
 
                     b.ToTable("Dog");
-
-            modelBuilder.Entity("DogAdoptionApp.Models.TxtBox", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TxtBox");
-
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,4 @@
-using DogAdoptionApp.Components;
+﻿using DogAdoptionApp.Components;
 using DogAdoptionApp.Components.Account;
 using DogAdoptionApp.Data;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -94,6 +94,13 @@ builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.Requ
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

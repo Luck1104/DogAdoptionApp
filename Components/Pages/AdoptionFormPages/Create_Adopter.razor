@@ -1,0 +1,69 @@
+﻿@page "/adoptionforms/create_adopter"
+@using Microsoft.EntityFrameworkCore
+@using DogAdoptionApp.Models
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h2>AdoptionForm</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <EditForm method="post" Model="AdoptionForm" OnValidSubmit="AddAdoptionForm" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="name" class="form-label">First and Last Name:</label> 
+                <InputText id="name" @bind-Value="AdoptionForm.Name" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => AdoptionForm.Name" class="text-danger" /> 
+            </div>
+            <div class="mb-3">
+                <label for="dogname" class="form-label">Name of dog you wish to adopt:</label>
+                <InputText id="dogname" @bind-Value="AdoptionForm.DogName" class="form-control" aria-required="true" />
+                <ValidationMessage For="() => AdoptionForm.DogName" class="text-danger" />
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Primary Address:</label> 
+                <InputText id="address" @bind-Value="AdoptionForm.Address" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => AdoptionForm.Address" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="phonenumber" class="form-label">Primary Phone Number:</label> 
+                <InputText id="phonenumber" @bind-Value="AdoptionForm.PhoneNumber" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => AdoptionForm.PhoneNumber" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="currentpets" class="form-label">Describe the current pets you have:</label> 
+                <InputText id="currentpets" @bind-Value="AdoptionForm.CurrentPets" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => AdoptionForm.CurrentPets" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="monthlyincome" class="form-label">What is your monthly income? (Enter in dollars and cents)</label> 
+                <InputNumber id="monthlyincome" @bind-Value="AdoptionForm.MonthlyIncome" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => AdoptionForm.MonthlyIncome" class="text-danger" /> 
+            </div>     
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/dogs_adoptable">Back to Dog List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private AdoptionForm AdoptionForm { get; set; } = new();
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddAdoptionForm()
+    {
+        using var context = DbFactory.CreateDbContext();
+        context.AdoptionForm.Add(AdoptionForm);
+        await context.SaveChangesAsync();
+        NavigationManager.NavigateTo("/adoptionforms_submitted");
+    }
+}
