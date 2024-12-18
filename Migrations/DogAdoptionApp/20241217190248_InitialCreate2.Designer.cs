@@ -12,7 +12,7 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
 {
     [DbContext(typeof(DogAdoptionAppContext))]
     [Migration("20241217190248_InitialCreate")]
-    partial class InitialCreate
+    partial class InitialCreate2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

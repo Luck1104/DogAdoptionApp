@@ -58,7 +58,7 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
                     b.HasKey("ShelterEventID");
 
                     b.ToTable("ShelterEvent");
-
+                });
 
             modelBuilder.Entity("DogAdoptionApp.Models.AdoptionForm", b =>
                 {
@@ -150,6 +150,7 @@ namespace DogAdoptionApp.Migrations.DogAdoptionApp
                     b.HasKey("DogID");
 
                     b.ToTable("Dog");
+                });
 
             modelBuilder.Entity("DogAdoptionApp.Models.TxtBox", b =>
                 {
