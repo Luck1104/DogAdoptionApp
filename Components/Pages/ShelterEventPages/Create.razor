@@ -1,0 +1,86 @@
+﻿@page "/shelterevents/create"
+@using Microsoft.EntityFrameworkCore
+@using DogAdoptionApp.Models
+@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
+@inject NavigationManager NavigationManager
+
+<PageTitle>Create</PageTitle>
+
+<h1>Create</h1>
+
+<h2>ShelterEvent</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <DogAdoptionApp.Components.Account.Shared.StatusMessage Message="@errorMessage" />
+        <EditForm method="post" Model="ShelterEvent" OnValidSubmit="AddShelterEvent" FormName="create" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary class="text-danger" role="alert"/>
+            <div class="mb-3">
+                <label for="name" class="form-label">Name:</label> 
+                <InputText id="name" @bind-Value="ShelterEvent.Name" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => ShelterEvent.Name" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="year" class="form-label">Year:</label> 
+                <InputNumber id="year" @bind-Value="ShelterEvent.Year" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => ShelterEvent.Year" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="month" class="form-label">Month:</label> 
+                <InputNumber id="month" @bind-Value="ShelterEvent.Month" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => ShelterEvent.Month" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="day" class="form-label">Day:</label> 
+                <InputNumber id="day" @bind-Value="ShelterEvent.Day" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => ShelterEvent.Day" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="location" class="form-label">Location:</label> 
+                <InputText id="location" @bind-Value="ShelterEvent.Location" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => ShelterEvent.Location" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="time" class="form-label">Time:</label> 
+                <InputText id="time" @bind-Value="ShelterEvent.Time" class="form-control" aria-required="true"/> 
+                <ValidationMessage For="() => ShelterEvent.Time" class="text-danger" /> 
+            </div>        
+            <div class="mb-3">
+                <label for="description" class="form-label">Description:</label> 
+                <InputText id="description" @bind-Value="ShelterEvent.Description" class="form-control" /> 
+                <ValidationMessage For="() => ShelterEvent.Description" class="text-danger" /> 
+            </div>        
+            <button type="submit" class="btn btn-primary">Create</button>
+        </EditForm>
+    </div>
+</div>
+
+<div>
+    <a href="/shelterevents">Back to List</a>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private ShelterEvent ShelterEvent { get; set; } = new();
+
+    private string? errorMessage;
+
+    // To protect from overposting attacks, see https://learn.microsoft.com/aspnet/core/blazor/forms/#mitigate-overposting-attacks.
+    private async Task AddShelterEvent()
+    {
+        DateOnly eventDate = new DateOnly(ShelterEvent.Year, ShelterEvent.Month, ShelterEvent.Day);
+        DateOnly dateNow = DateOnly.FromDateTime(DateTime.Now);
+        if (eventDate > dateNow)
+        {
+            using var context = DbFactory.CreateDbContext();
+            context.ShelterEvent.Add(ShelterEvent);
+            await context.SaveChangesAsync();
+            NavigationManager.NavigateTo("/shelterevents");
+        }
+        else
+        {
+            errorMessage = "Error: Please choose a date in the future.";
+        }
+    }
+}
