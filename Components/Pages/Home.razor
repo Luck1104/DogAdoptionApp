@@ -1,10 +1,4 @@
 ﻿@page "/"
-@using Microsoft.EntityFrameworkCore
-@using Microsoft.AspNetCore.Components.QuickGrid
-@using DogAdoptionApp.Models
-@using DogAdoptionApp.Data
-@implements IAsyncDisposable
-@inject IDbContextFactory<DogAdoptionApp.Data.DogAdoptionAppContext> DbFactory
 
 <PageTitle>Fido and Co.</PageTitle>
 
@@ -16,67 +10,83 @@
         <p>Welcome to our website! Stay updated with new posts and images.</p>
     </div>
 
-    
-
-    <!-- QuickGrid Section for Blog Posts -->
+    <!-- Blog Posts Section -->
     <div class="blog-posts">
-        <QuickGrid Class="table" Items="context.TxtBox">
-            <TemplateColumn Context="txtbox">
-                <div class="blog-entry">
-                    <div class="blog-content">
-                        @txtbox.Content
-                    </div>
+        <!-- Blog Post 1 -->
+        <div class="blog-entry">
+            <div class="blog-content">
+                <h2>News and Notifications</h2>
+                <p>Please be aware the site will be down for maintenence Dec 20 2024</p>
+            </div>
 
-                    <div class="blog-image">
-                        @if (!string.IsNullOrEmpty(txtbox.ImageUrl))
-                        {
-                            <img src="@txtbox.ImageUrl" alt="Uploaded Image" />
-                        }
-                        else
-                        {
-                           
-                        }
-                    </div>
+        </div>
+
+        <!-- Blog Post 2 -->
+        <div class="blog-entry">
+            <div class="blog-content">
+                <h2>Our Mission:</h2>
+                <p>At Fido and Co., our mission is to create a compassionate community where every dog finds a loving home. We strive to connect families with their perfect canine companions while promoting responsible pet ownership and supporting animal welfare initiatives. Through education, advocacy, and heartfelt care, we aim to make a difference in the lives of dogs and the people who love them.</p>
+            </div>
+            <div class="blog-entry">
+                <div class="blog-content">
+                    <h2>The senior dog who would do anything for her furever family</h2>
+                    <p>Samantha Parker was at work at a vet clinic in Memphis when MidSouth Animal Rescue League president Linda Money asked if she could help her get a new rescue out of her van. The old yellow lab was in really bad shape, unfortunately in more ways than one. When Parker walked out to get her, she knew that she’d be taking her home. The dog’s owner had passed, and his son took her, but didn’t really want her. She had been chained to a tree with only a small wire kennel as her shelter with no food or water, and she could barely even walk. Parker didn’t know how she would act with her family, but was willing to find out. It was love at first sight: The dog, now named Lady, became fast BFFs with her children. “She acts like she has always been here and feels that way for us too,” says Parker. “Lady has taught me that the love of a senior dog is like no other. She needed me, she needed TLC, she needed a lot of medication, and most of all she needed a family and she has all of that now for however long she has left.” Lady is estimated to be about ten years old and especially loves when Parker’s daughter, Caroline, has her friends over for sleepovers. As for Parker’s son, Jack, he didn’t even like dogs until Lady came around. “She just lays and lets the kids do whatever they want to her,” Parker says. “It stands out to me because everyone hesitates to bring in a senior dog to there family but she has taught me to never hesitate again. She is completely dedicated to us. She would do anything for us.”</p>
                 </div>
-            </TemplateColumn>
-        </QuickGrid>
+                <div class="blog-image">
+                    <img src="/images/Dog3.png" alt="Dog adoption guide image" />
+                </div>
+            </div>
+        </div>
     </div>
+
 </div>
+<!-- Footer Section -->
+<footer class="footer">
+    <div class="footer-content">
+        <p><strong>Contact Us</strong></p>
+        <p>Email: contact@fidoandco.com</p>
+        <p>Phone: (555) 123-4567</p>
+        <p>Address: 123 Real Lane, Very Real City, USA</p>
+    </div>
+</footer>
 
-@code {
-    private DogAdoptionAppContext context = default!;
-
-    protected override void OnInitialized()
-    {
-        context = DbFactory.CreateDbContext();
+<!-- Add styling for the footer -->
+<style>
+    .footer {
+        margin-top: 40px;
+        background-color: #003366;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
     }
 
-    public async ValueTask DisposeAsync() => await context.DisposeAsync();
-}
+    .footer-content p {
+        margin: 5px 0;
+        font-size: 1em;
+    }
+</style>
 
 <!-- CSS Styling -->
 <style>
- 
     body {
-        background-image: url('/images/PawsBackground.png'); 
-        background-size: cover; 
-        background-position: center center; 
-        background-attachment: fixed; 
+        background-image: url('/images/PawsBackground.png');
+        background-size: cover;
+        background-position: center center;
+        background-attachment: fixed;
         margin: 0;
         padding: 0;
     }
 
-    
     .main-container {
-        margin-left: 50px; 
-        background-color: rgba(255, 255, 255, 0.8); 
+        margin-left: 50px;
+        background-color: rgba(255, 255, 255, 0.8);
         border-radius: 10px;
         padding: 20px;
     }
 
-  
     .banner {
-        background-color: #003366; 
+        background-color: #003366;
         padding: 20px;
         text-align: center;
         margin-bottom: 20px;
@@ -91,38 +101,23 @@
 
         .banner p {
             font-size: 1.1em;
-            color: #d1e1f0; 
+            color: #d1e1f0;
             margin-top: 10px;
         }
 
-    /* Create New Link Styling */
-    .create-new-link {
-        font-size: 1.2em;
-        font-weight: bold;
-        color: #007bff;
-        text-decoration: none;
-    }
-
-        .create-new-link:hover {
-            text-decoration: underline;
-        }
-
-    /* Blog Posts Section Styling */
     .blog-posts {
         margin-top: 30px;
     }
 
-    /* Each Blog Post Entry Styling */
     .blog-entry {
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
         padding: 15px;
         background-color: #f8f9fa;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        position: relative; 
+        position: relative;
     }
 
-    /* Content Styling */
     .blog-content {
         white-space: pre-wrap;
         word-wrap: break-word;
@@ -132,14 +127,13 @@
         margin-right: 220px;
     }
 
-    
     .blog-image {
-        position: absolute; 
+        position: absolute;
         top: 0;
         right: 0;
-        margin-top: 10px; 
-        margin-right: 20px; 
-        max-width: 100px; 
+        margin-top: 10px;
+        margin-right: 20px;
+        max-width: 100px;
         max-height: 80px;
     }
 
